@@ -29,17 +29,18 @@ class TextNode():
     def text_node_to_html(self):
         match self.text_type:
             case TextType.PLAIN:
-                return LeafNode(value=self.text)
+                return LeafNode(tag = None, value=self.text.replace("\n", " "))
             case TextType.BOLD:
                 return LeafNode(tag="b", value=self.text)
             case TextType.ITALIC:
                 return LeafNode(tag="i", value=self.text)
             case TextType.CODE:
-                return LeafNode(tag="code", value=self.text)
+                return LeafNode(tag="code", value=self.text.replace("```\n", "").replace("\n```", ""))
             case TextType.LINK: 
                 return LeafNode(tag="a", value=self.text, props={"href":self.url})
             case TextType.IMAGE:
                 return LeafNode(tag="img", value="", props={"src":self.url,"alt":self.text})
+            
 
     
             
