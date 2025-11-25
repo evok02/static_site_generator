@@ -28,8 +28,10 @@ def copy_to_folder(source, destination):
 
         
     
-def copy_to_public(dir_name):
+def copy_to_docs(dir_name):
     dir_path = os.path.join(os.getcwd(), dir_name)
-    destination_path = (os.path.join(os.getcwd(), "public"))
+    destination_path = (os.path.join(os.getcwd(), "docs"))
     delete_from_public(destination_path)
     copy_to_folder(dir_path, destination_path)
+
+
