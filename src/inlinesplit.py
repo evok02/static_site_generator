@@ -53,6 +53,7 @@ def split_node_image(nodes):
             new_nodes.append(node)
             continue
         if not extract_images(node.text):
+            print(node.text)
             new_nodes.append(node)
             continue
         local_images = extract_images(node.text)
@@ -77,3 +78,11 @@ def text_to_textnodes(text):
     text_nodes = split_node_image(text_nodes)
     text_nodes = split_node_link(text_nodes)
     return text_nodes
+
+
+def main():
+    text = """![JRR Tolkien sitting](/images/tolkien.png)"""
+    print(text_to_textnodes(text))
+
+if __name__ == "__main__":
+   main() 

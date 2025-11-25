@@ -3,6 +3,7 @@ from textnode import TextNode, TextType
 from blocksplit import BlockType, markdown_to_blocks, block_to_block_type
 from inlinesplit import text_to_textnodes 
 
+
 def block_to_html_node(block_type, text):
     match block_type:
         case BlockType.PARAGRAPH:
@@ -10,17 +11,29 @@ def block_to_html_node(block_type, text):
         case BlockType.UNORDERED_LIST:
             children = []
             for line in text.split("\n"):
-                children.append(LeafNode("li", f"{line.replace("-", "")}"))
+                line = line.replace("- ", "").strip()
+                sub_children = text_to_children(line)
+                children.append(ParentNode("li", sub_children))
             return ParentNode("ul", children)
         case BlockType.ORDERED_LIST:
             children = []
             for line in text.split("\n"):
-                children.append(LeafNode("li", f"{line.split(".")[1]}"))
+                line = line.split(".")[1].strip()
+                sub_children = text_to_children(line)
+                children.append(ParentNode("li", sub_children))
             return ParentNode("ol", children)
         case BlockType.HEADING:
-            return ParentNode("h1", None)
+            before_len = len(text)
+            text = text.replace("#", "")
+            after_len = len(text)
+            sub_children = text_to_children(text.strip())
+            return ParentNode(f"h{before_len - after_len}", sub_children)
         case BlockType.QUOTE:
-            return ParentNode("blockquote", None)
+            children = []
+            for line in text.split("\n"):
+                line = line.strip().replace(">", "")
+                children.append(LeafNode(tag = None, value = line.strip()))
+            return ParentNode("blockquote", children)
         case BlockType.CODE:
             return ParentNode("code", None)
 
@@ -42,6 +55,10 @@ def markdown_to_html_node(text):
             html_node = ParentNode("pre", None) 
             html_node.children = [TextNode(block, TextType.CODE).text_node_to_html()]
         elif blocktype == BlockType.ORDERED_LIST or blocktype == BlockType.UNORDERED_LIST:
+            html_node = block_to_html_node(blocktype, block)
+        elif blocktype == BlockType.QUOTE:
+            html_node = block_to_html_node(blocktype, block)
+        elif blocktype == BlockType.HEADING:
             html_node = block_to_html_node(blocktype, block)
         else:
             html_node = block_to_html_node(blocktype, block)
