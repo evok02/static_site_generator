@@ -1,8 +1,8 @@
 from textnode import TextNode, TextType
+from copy import copy_to_public
 
 def main():
-    text_node = TextNode("Some url", TextType.LINK, "www.google.com")
-    print(text_node)
+    print(copy_to_public("static"))
 
 if __name__ == "__main__":
     main()

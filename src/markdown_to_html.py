@@ -49,38 +49,3 @@ def markdown_to_html_node(text):
         html_nodes.append(html_node)
     return ParentNode("div", html_nodes).to_html()
 
-def main():
-    return markdown_to_html_node("""
-- Torin 
-- Gorin
-
-1. Legalas
-2. Torin
-
-[Google](https://www.google.com)
-
-![Alt text](https://example.com/image.jpg)
-
-```
-This is text that _should_ remain
-the **same** even with inline stuff
-```
-
-This is **bolded** paragraph
-text in a p
-tag here
-
-This is another paragraph with _italic_ text and `code` here
-""")
-
-if __name__ == "__main__":
-    print(main())
-
-
-
-
-
-
-
-
-
